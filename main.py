@@ -14,8 +14,15 @@ data_framingham_cleaned.loc[(data_framingham_cleaned['SEX'] == 2)] = 0
 #reset index
 data_framingham_cleaned.reset_index(inplace=True)
 
-#heartRateOutlierUpperBound = data_chsl["Heart Rate"].quantile(0.75) + 1.5 * (data_chsl["Heart Rate"].quantile(0.75) - data_chsl["Heart Rate"].quantile(0.25))
-data_iran_cleaned = data_iran.loc[(data_iran["Blood sugar"] < 541) & (data_iran["Result"] == "positive")]
+
+##getting rid of outliers
+data_iran_cleaned = data_iran
+print(data_iran_cleaned)
+
+def removeOutliers(df, column):
+    Max = df[column].quantile(0.75) + 1.5 * (df[column].quantile(0.75) - df[column].quantile(0.25))
+    Min = df[column].quantile(0.25) - 1.5 * (df[column].quantile(0.75) - df[column].quantile(0.25))
+    return df[(df[column] > Min) & (df[column] < Max)]
 
 # age, sex, heart rate, systolic/diastolic blood pressure, blood sugar - Merge into one dataset
 data_framingham_cleaned.rename(columns={"SEX": "Sex", "AGE": "Age", "DIABP": "D_BP", "SYSBP": "S_BP", "HEARTRTE": "Heart rate", "GLUCOSE": "Blood sugar"}, inplace=True)
