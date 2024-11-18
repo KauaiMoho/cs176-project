@@ -17,12 +17,42 @@ data_framingham_cleaned.reset_index(inplace=True)
 
 ##getting rid of outliers
 data_iran_cleaned = data_iran
-print(data_iran_cleaned)
+data_chsl_cleaned = data_chsl
+print(data_chsl_cleaned)
 
 def removeOutliers(df, column):
     Max = df[column].quantile(0.75) + 1.5 * (df[column].quantile(0.75) - df[column].quantile(0.25))
     Min = df[column].quantile(0.25) - 1.5 * (df[column].quantile(0.75) - df[column].quantile(0.25))
     return df[(df[column] > Min) & (df[column] < Max)]
+
+
+print(data_chsl.columns)
+##removing outliers from data_iran
+data_iran_cleaned = removeOutliers(data_iran_cleaned, 'Heart rate')
+data_iran_cleaned = removeOutliers(data_iran_cleaned, 'Systolic blood pressure')
+data_iran_cleaned = removeOutliers(data_iran_cleaned, 'Diastolic blood pressure')
+data_iran_cleaned = removeOutliers(data_iran_cleaned, 'Blood sugar')
+data_iran_cleaned = removeOutliers(data_iran_cleaned, 'CK-MB')
+data_iran_cleaned = removeOutliers(data_iran_cleaned, 'Troponin')
+
+#removing outliers from data_chsl
+data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'cp')
+data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'trestbps')
+data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'chol')
+data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'fbs')
+data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'restecg')
+data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'thalach')
+data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'oldpeak')
+
+
+print(data_chsl_cleaned)
+
+
+
+
+
+
+
 
 # age, sex, heart rate, systolic/diastolic blood pressure, blood sugar - Merge into one dataset
 data_framingham_cleaned.rename(columns={"SEX": "Sex", "AGE": "Age", "DIABP": "D_BP", "SYSBP": "S_BP", "HEARTRTE": "Heart rate", "GLUCOSE": "Blood sugar"}, inplace=True)
