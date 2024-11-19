@@ -1,3 +1,11 @@
+# Cleaning: Removing duplicates, filling missing values, etc. - DONE
+# Filtering subsets of your data with explanations. - DONE
+# Sorting your data with explanations. - TODO
+# Merging data in different ways with explanations. - DONE (concat)
+# Visualizing data using at least five types of visualizations (e.g., scatter plots, bar charts, histograms, line charts, boxplots, etc). - TODO
+# Pivoting or stacking your data with explanations. - TODO
+
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
