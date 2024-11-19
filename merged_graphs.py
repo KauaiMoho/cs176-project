@@ -26,6 +26,7 @@ data_iran_cleaned = data_iran
 data_chsl_cleaned = data_chsl
 print(data_chsl_cleaned)
 
+
 def removeOutliers(df, column):
     Max = df[column].quantile(0.75) + 1.5 * (df[column].quantile(0.75) - df[column].quantile(0.25))
     Min = df[column].quantile(0.25) - 1.5 * (df[column].quantile(0.75) - df[column].quantile(0.25))
@@ -45,7 +46,6 @@ data_iran_cleaned = removeOutliers(data_iran_cleaned, 'Troponin')
 data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'cp')
 data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'trestbps')
 data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'chol')
-data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'fbs')
 data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'restecg')
 data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'thalach')
 data_chsl_cleaned = removeOutliers(data_chsl_cleaned, 'oldpeak')
@@ -57,6 +57,13 @@ data_framingham_cleaned_diseased.rename(columns={"SEX": "Sex", "AGE": "Age", "DI
 data_iran_cleaned.rename(columns={"Gender": "Sex", "Systolic blood pressure": "S_BP", "Diastolic blood pressure": "D_BP"}, inplace=True)
 data_fi_merged = pd.concat([data_framingham_cleaned_diseased,data_iran_cleaned], ignore_index=True).loc[:,['Age','Sex','S_BP','D_BP','Heart rate','Blood sugar']]
 #TODO - Merge CHSL data
+
+#merging chsl data with data_fi_merged
+data_chsl_cleaned.rename(columns={"age": "Age", "sex": "Sex", "trestbps": "D_BP", "fbs": "Blood sugar", "thalach": "Heart Rate"}, inplace=True)
+common_columns = list(set(data_fi_merged.columns) & set(data_chsl_cleaned.columns))
+data_chsl_cleaned = data_chsl_cleaned[common_columns]
+data_all = pd.merge(data_fi_merged, data_chsl_cleaned, on=common_columns, how="outer")
+
 
 
 #Visualization to show biases for MERGED data - By Karma Luitel
