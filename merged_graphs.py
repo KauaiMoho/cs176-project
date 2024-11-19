@@ -64,6 +64,17 @@ common_columns = list(set(data_fi_merged.columns) & set(data_chsl_cleaned.column
 data_chsl_cleaned = data_chsl_cleaned[common_columns]
 data_all = pd.merge(data_fi_merged, data_chsl_cleaned, on=common_columns, how="outer")
 
+pd.plotting.scatter_matrix(data_all[['Age','Sex','S_BP','D_BP','Heart rate','Blood sugar']], alpha=0.5, figsize=(8, 8), diagonal='hist')
+plt.suptitle('Scatter Matrix of All Data')
+
+##showinig the linear relationship
+fig, ax = plt.subplots()
+ax.scatter(data_all.S_BP, data_all.D_BP)
+ax.set_xlabel("Systolic blood pressure mmHg")
+ax.set_ylabel("Diastolic blood pressure mmHg")
+ax.set_title("Systolic vs Diastolic blood pressure in Diseased Patients")
+
+
 
 
 #Visualization to show biases for MERGED data - By Karma Luitel

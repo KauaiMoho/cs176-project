@@ -42,12 +42,12 @@ data_iran_cleaned = removeOutliers(data_iran_cleaned, 'Troponin')
 
 data_iran_postive = data_iran_cleaned[data_iran_cleaned.Result == "positive"]
 data_iran_postive.set_index(["Age"], inplace=True)
-data_iran_postive.sort_index(inplace=True)
+data_iran_postive.sort_index(inplace=True) #sorting
 print(data_iran_postive)
 
 data_iran_negative = data_iran_cleaned[data_iran_cleaned.Result == "negative"]
 data_iran_negative.set_index(["Age"], inplace=True)
-data_iran_negative.sort_index(inplace=True)
+data_iran_negative.sort_index(inplace=True) #sorting
 print(data_iran_negative)
 
 plt.scatter(data_iran_postive.index, data_iran_postive["Troponin"], label="Had Heart disease", color = "blue", alpha=0.5)
