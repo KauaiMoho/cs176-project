@@ -91,6 +91,7 @@ ax[1].set_title('Merged Age Distribution (years)')
 fig.tight_layout()
 
 data_reshaped = data_all.reset_index(drop=True)
+data_reshaped.drop('S_BP', axis=1, inplace=True)
 data_reshaped = data_reshaped.pivot(columns='Sex').stack().swaplevel()
 
 data_reshaped.loc['Male'].hist()
