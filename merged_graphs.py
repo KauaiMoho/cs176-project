@@ -1,9 +1,9 @@
 # Cleaning: Removing duplicates, filling missing values, etc. - DONE
 # Filtering subsets of your data with explanations. - DONE
-# Sorting your data with explanations. - TODO
-# Merging data in different ways with explanations. - DONE (concat)
+# Sorting your data with explanations. - DONE
+# Merging data in different ways with explanations. - DONE
 # Visualizing data using at least five types of visualizations (e.g., scatter plots, bar charts, histograms, line charts, boxplots, etc). - TODO
-# Pivoting or stacking your data with explanations. - TODO
+# Pivoting or stacking your data with explanations. - DONE
 
 
 import pandas as pd
@@ -73,7 +73,7 @@ fig, ax = plt.subplots()
 ax.scatter(data_all.S_BP, data_all.D_BP)
 ax.set_xlabel("Systolic blood pressure mmHg")
 ax.set_ylabel("Diastolic blood pressure mmHg")
-ax.set_title("Systolic vs Diastolic blood pressure in Diseased Patients")
+ax.set_title("Systolic vs Diastolic blood pressure in patients")
 
 #Visualization to show biases for MERGED data - By Karma Luitel
 # Age biases and Gender biases
@@ -85,12 +85,21 @@ bin_labels = ['1-39', '40-59', '60-79', '80-99']
 data_all['Age_Category'] = pd.cut(data_all['Age'], bins, right=False, labels=bin_labels)
 ax[0].pie(data_all['Sex'].value_counts(), labels=data_all['Sex'].value_counts().index, autopct='%.1f%%')
 ax[1].pie(data_all['Age_Category'].value_counts(), labels=data_all['Age_Category'].value_counts().index, autopct='%.1f%%')
-ax[0].set_title('Sex Distribution ')
-ax[1].set_title('Age Distribution (years)')
-
-
+ax[0].set_title('Merged Sex Distribution ')
+ax[1].set_title('Merged Age Distribution (years)')
 
 fig.tight_layout()
+
+data_reshaped = data_all.reset_index(drop=True)
+data_reshaped = data_reshaped.pivot(columns='Sex').stack().swaplevel()
+
+data_reshaped.loc['Male'].hist()
+plt.suptitle('Male Merged Data')
+plt.tight_layout()
+
+data_reshaped.loc['Female'].hist()
+plt.suptitle('Female Merged Data')
+plt.tight_layout()
 plt.show()
 
 
