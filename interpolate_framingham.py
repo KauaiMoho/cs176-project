@@ -6,8 +6,11 @@ import matplotlib.pyplot as plt
 data_framingham = pd.read_csv('heart_disease_framingham.csv')
 #drop data with missing values in blood sugar cols
 data_framingham_cleaned = data_framingham.dropna(subset=['TOTCHOL', 'LDLC'])
-# set male = 1, female = 0
-data_framingham_cleaned.loc[(data_framingham_cleaned['SEX'] == 2)] = 0
+# set male and female 
+data_framingham_cleaned['SEX'].replace(2, 'F', inplace=True)
+data_framingham_cleaned['SEX'].replace(1, 'M', inplace=True)
+#remove 0 vals
+data_all = data_framingham_cleaned.loc[(data_framingham_cleaned != 0).all(axis=1)]
 #reset index
 data_framingham_cleaned.reset_index(inplace=True)
 
