@@ -60,8 +60,8 @@ data_chsl_cleaned.rename(columns={"age": "Age", "sex": "Sex", "trestbps": "D_BP"
 common_columns = list(set(data_fi_merged.columns) & set(data_chsl_cleaned.columns))
 data_chsl_cleaned = data_chsl_cleaned[common_columns]
 data_all = pd.merge(data_fi_merged, data_chsl_cleaned, on=(common_columns), how="outer")
-data_all['Sex'].replace(0, 'F', inplace=True)
-data_all['Sex'].replace(1, 'M', inplace=True)
+data_all['Sex'].replace(0, 'Female', inplace=True)
+data_all['Sex'].replace(1, 'Male', inplace=True)
 data_all = data_all.loc[(data_all != 0).all(axis=1)]
 
 
@@ -80,14 +80,15 @@ ax.set_title("Systolic vs Diastolic blood pressure in Diseased Patients")
 
 fig, ax = plt.subplots(ncols=2)
 
-bins = [0, 15, 30, 45, 60, 75,  90]
-bin_labels = ['1-14', '14-29', '29-44', '44-59', '59-74', '74+']
+bins = [0, 40, 60, 80, 100]
+bin_labels = ['1-39', '40-59', '60-79', '80-99']
 data_all['Age_Category'] = pd.cut(data_all['Age'], bins, right=False, labels=bin_labels)
-
-ax[0].pie(data_all['Sex'].value_counts(), labels=['Male', 'Female'], autopct='%.1f%%')
-ax[1].pie(data_all['Age_Category'].value_counts(), labels=bin_labels, autopct='%.1f%%')
+ax[0].pie(data_all['Sex'].value_counts(), labels=data_all['Sex'].value_counts().index, autopct='%.1f%%')
+ax[1].pie(data_all['Age_Category'].value_counts(), labels=data_all['Age_Category'].value_counts().index, autopct='%.1f%%')
 ax[0].set_title('Sex Distribution ')
 ax[1].set_title('Age Distribution (years)')
+
+
 
 fig.tight_layout()
 plt.show()
