@@ -8,7 +8,7 @@ data_framingham = pd.read_csv('heart_disease_framingham.csv')
 #File by Karma Luitel
 
 #drop data with missing values in blood sugar cols
-data_framingham_cleaned = data_framingham.dropna(subset=['TOTCHOL', 'LDLC'])
+data_framingham_cleaned = data_framingham.dropna(subset=['TOTCHOL', 'BMI', 'DIABP', 'SYSBP'])
 # set male and female 
 data_framingham_cleaned['SEX'].replace(2, 'Female', inplace=True)
 data_framingham_cleaned['SEX'].replace(1, 'Male', inplace=True)
@@ -26,7 +26,7 @@ def drop_outliers(df_original, cols):
         df[col] = df.loc[(df[col] > (quartile_1 - (1.5 * iqr))) & (df[col] < (quartile_3 + (1.5 * iqr))), col]
     return df
 
-#Visualization to show healthy/unhealthy levels of biomarkers in Framingham - By Karma Luitel - WIP
+#Visualization to show healthy/unhealthy levels of biomarkers in Framingham - By Karma Luitel
 fig1, ax1 = plt.subplots(ncols=2, nrows=2)
 
 check_subset = ['TOTCHOL', 'BMI', 'SYSBP', 'DIABP']
@@ -35,24 +35,25 @@ for col in check_subset:
     data_framingham_boxplot[col].replace(0.0, pd.NA, inplace=True)
 data_framingham_boxplot.dropna(subset=check_subset, inplace=True)
 
-ax1[0][0].boxplot([data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 1), 'TOTCHOL'], data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 0), 'TOTCHOL']])
-ax1[0][0].set_xticklabels(['Diseased', 'Healthy'])
-ax1[0][0].set_ylabel('Total Cholesterol')
+ax1[0][0].violinplot([data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 1), 'TOTCHOL'], data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 0), 'TOTCHOL']], showmedians=True)
+ax1[0][0].set_xticks([1,2],labels=['Diseased', 'Healthy'])
+ax1[0][0].set_ylabel('Total Cholesterol (mg/dL)')
 ax1[0][0].set_title('Diseased/healthy Cholesterol')
 
-ax1[0][1].boxplot([data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 1), 'BMI'], data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 0), 'BMI']])
-ax1[0][1].set_xticklabels(['Diseased', 'Healthy'])
-ax1[0][1].set_ylabel('BMI')
+
+ax1[0][1].violinplot([data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 1), 'BMI'], data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 0), 'BMI']], showmedians=True)
+ax1[0][1].set_xticks([1,2],labels=['Diseased', 'Healthy'])
+ax1[0][1].set_ylabel('BMI (kg/m2)')
 ax1[0][1].set_title('Diseased/healthy BMI')
 
-ax1[1][0].boxplot([data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 1), 'DIABP'], data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 0), 'DIABP']])
-ax1[1][0].set_xticklabels(['Diseased', 'Healthy'])
-ax1[1][0].set_ylabel('Diastolic Blood Pressure')
+ax1[1][0].violinplot([data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 1), 'DIABP'], data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 0), 'DIABP']], showmedians=True)
+ax1[1][0].set_xticks([1,2],labels=['Diseased', 'Healthy'])
+ax1[1][0].set_ylabel('Diastolic BP (mmHg)')
 ax1[1][0].set_title('Diseased/healthy Diastolic Blood Pressure')
 
-ax1[1][1].boxplot([data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 1), 'SYSBP'], data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 0), 'SYSBP']])
-ax1[1][1].set_xticklabels(['Diseased', 'Healthy'])
-ax1[1][1].set_ylabel('Systolic Blood Pressure')
+ax1[1][1].violinplot([data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 1), 'SYSBP'], data_framingham_boxplot.loc[(data_framingham_boxplot['PREVCHD'] == 0), 'SYSBP']], showmedians=True)
+ax1[1][1].set_xticks([1,2],labels=['Diseased', 'Healthy'])
+ax1[1][1].set_ylabel('Systolic BP (mmHg)')
 ax1[1][1].set_title('Diseased/healthy Systolic Blood Pressure')
 
 fig1.tight_layout()

@@ -21,9 +21,11 @@ plt.suptitle('Scatter Matrix of Framingham Data')
 
 #From scatter matrix, notice a linear relationship between HDLC and LDLC, begin calculating least squares regression
 ax[0].scatter(data_framingham_cleaned['TOTCHOL'], data_framingham_cleaned['LDLC'])
+
+# Low Density Lipoprotein Cholesterol
 ax[0].set_title('Total Chloestrol to LDLC (Framingham)')
-ax[0].set_xlabel('Total Chloestrol')
-ax[0].set_ylabel('LDLC')
+ax[0].set_xlabel('Total Chloestrol (mg/dL)')
+ax[0].set_ylabel('LDLC (mg/dL)')
 
 #data has no outliers in testing.
 
@@ -52,7 +54,8 @@ ax[0].plot(data_framingham_cleaned['TOTCHOL'], y_fit)
 
 #interpolate missing LDLC values in data_framingham using calc least square regression function from earlier
 data_framingham_interpolated = data_framingham.dropna(subset=['TOTCHOL']) 
-data_framingham_interpolated.loc[(data_framingham_interpolated['SEX'] == 2)] = 0
+data_framingham_interpolated['SEX'].replace(2, 'Female', inplace=True)
+data_framingham_interpolated['SEX'].replace(1, 'Male', inplace=True)
 data_framingham_interpolated.reset_index(inplace=True)
 data_framingham_interpolated['LDLC'].fillna(-1, inplace=True)
 data_framingham_interpolated.loc[data_framingham_interpolated['LDLC'] == -1, 'LDLC'] = data_framingham_interpolated['TOTCHOL'] * m + c
@@ -61,7 +64,7 @@ data_framingham_interpolated.dropna(subset=['LDLC'],inplace=True)
 
 ax[1].boxplot([data_framingham_interpolated.loc[(data_framingham_interpolated['PREVCHD'] == 1), 'LDLC'], data_framingham_interpolated.loc[(data_framingham_interpolated['PREVCHD'] != 1), 'LDLC']])
 ax[1].set_xticklabels(['Diseased', 'Healthy'])
-ax[1].set_ylabel('LDLC')
+ax[1].set_ylabel('LDLC (mg/dL)')
 ax[1].set_title('Diseased/healthy LDLC (Interpolated)')
 
 fig.tight_layout()
